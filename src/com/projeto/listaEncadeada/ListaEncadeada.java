@@ -31,30 +31,30 @@ public class ListaEncadeada<T> {
         return tamanhoLista;
     }
 
-    public void add(T content){
+    public void add(T content) {
         No<T> novoNo = new No<>(content);
 
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             refereciaEntrada = novoNo;
             return;
         }
 
         No<T> noAuxiliar = refereciaEntrada;
 
-        for(int i = 0; i < this.size()-1; i++){
+        for (int i = 0; i < this.size() - 1; i++) {
             noAuxiliar = noAuxiliar.getNextNo();
         }
 
         noAuxiliar.setNextNo(novoNo);
     }
 
-    private No<T> getNo(int index){
+    private No<T> getNo(int index) {
         validaIndice(index);
 
         No<T> noAuxiliar = refereciaEntrada;
         No<T> noRetorno = null;
 
-        for(int i = 0; i < this.size()-1; i++){
+        for (int i = 0; i <= index; i++) {
             noRetorno = noAuxiliar;
             noAuxiliar = noAuxiliar.getNextNo();
         }
@@ -63,11 +63,42 @@ public class ListaEncadeada<T> {
 
     }
 
-    private void validaIndice(int index){
-        if(index >= this.size()){
+    private void validaIndice(int index) {
+        if (index >= this.size()) {
             throw new IndexOutOfBoundsException("A lista não possui o indice indicado.");
         }
     }
 
+    public T get(int index) {
+        return getNo(index).getContent();
+    }
 
+    public T remove(int index) {
+        No<T> noPivo = this.getNo(index);
+        if (index == 0) {
+            refereciaEntrada = noPivo.getNextNo();
+            return noPivo.getContent();
+        }
+
+        No<T> noAnterior = getNo(index - 1);
+        noAnterior.setNextNo(noPivo.getNextNo());
+
+        return noPivo.getContent();
+    }
+
+    @Override
+    public String toString() {
+        String strRetorno ="";
+
+        No<T> noAuxiliar = refereciaEntrada;
+
+        for(int i = 0; i< this.size(); i++){
+            strRetorno += "No{[" + "Conteudo=" + noAuxiliar.getContent() + "}]------>";
+            noAuxiliar = noAuxiliar.getNextNo();
+        }
+        strRetorno += "null";
+        return strRetorno;
+    }
 }
+
+
